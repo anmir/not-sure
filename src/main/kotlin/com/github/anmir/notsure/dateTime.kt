@@ -1,11 +1,12 @@
 package com.github.anmir.notsure
 
 import java.time.Duration
+import java.time.Instant
+import java.time.LocalDateTime
 import java.time.Period
 
 fun main() {
-    interval()
-
+    localDateTimeOperations()
 }
 
 /**
@@ -31,5 +32,16 @@ fun interval() {
     val oneYearAsPeriod = Period.parse(oneYear)
     println(oneYearAsPeriod)
     val oneYearAsDuration = Duration.parse(oneYear)//produces error
+}
+
+fun localDateTimeOperations() {
+    val oneDay = Duration.ofDays(1)
+    val oneYear = Period.ofYears(1)
+
+    LocalDateTime.now().plus(oneDay)
+    LocalDateTime.now().plus(oneYear)
+
+    Instant.now().plus(oneDay) //OK
+    Instant.now().plus(oneYear) // produces java.time.temporal.UnsupportedTemporalTypeException: Unsupported unit: Years
 
 }
