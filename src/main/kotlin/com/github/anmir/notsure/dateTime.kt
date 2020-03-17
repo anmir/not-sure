@@ -1,10 +1,12 @@
 package com.github.anmir.notsure
 
 import java.time.Duration
+import java.time.LocalDateTime
 import java.time.Period
 
 fun main() {
     interval()
+    localDateTimeOperations()
 
 }
 
@@ -31,5 +33,9 @@ fun interval() {
     val oneYearAsPeriod = Period.parse(oneYear)
     println(oneYearAsPeriod)
     val oneYearAsDuration = Duration.parse(oneYear)//produces error
+}
 
+fun localDateTimeOperations() {
+    val plus = LocalDateTime.now().plus(Duration.ofDays(1))
+    println(plus)
 }
