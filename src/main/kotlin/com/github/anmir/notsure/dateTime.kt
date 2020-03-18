@@ -45,3 +45,25 @@ fun localDateTimeOperations() {
     Instant.now().plus(oneYear) // produces java.time.temporal.UnsupportedTemporalTypeException: Unsupported unit: Years
 
 }
+/**
+ * особенности работы с датами
+
+jackson:
+objectMapper.timeZone  - это и есть contextTimeZone
+ADJUST_DATES_TO_CONTEXT_TIME_ZONE - влияет только для ZonedDateTime, OffsetDateTime
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Europe/Moscow") - параметр timezone - работает только в паре с pattern
+
+PostgreSQL JDBC driver по умолчанию устанавливает timeZone в соответствие с JVM;
+db -> java Instant имеет смысл при хранении timestamp without timezone
+Duration & Period - представляют Interval  P(n)Y(n)M(n)DT(n)H(n)M(n)S. Но! Period работает с левой частью P(n)Y(n)M(n)D, а Duration c правой PT(n)H(n)M(n)S. Они реализуют общий интерфейс TemporalAmount. *При работе с jackson есть формат преобразуется в наиболее подходящий: т.е. задав PT3600M десериализация и сериализация приведут к PT1H.
+Instant- работает с duration & Period. НО! если Period>day, то runtime ошибка
+LocalDateTime - удобен для операций с датами. Можно безопасно использовать при условии, что timeZone JVM - utc
+ZonedDateTime - имеет смысл если хранить в БД timestamp with timezone
+OffsetDateTime - удобен для коммуникации между сервисами, т.к. всегда хранит смещение. По сути - репрезентация формата +02:00
+ZoneId for Instant <-> LocalDateTime conversion
+
+При работе с операциями над датами важно писать тесты на короткие интервалы времени (минуты, секунды).
+ *
+ *
+ *
+ * */
